@@ -1,0 +1,24 @@
+<nb-card class="nb-card">
+
+    <nb-card-header>
+      Admin Question Management/View
+    </nb-card-header>
+
+    <nb-card-body>
+
+        <div class="row">
+
+            <div class="col-md-7">
+                <h5>POST</h5>
+                <h6>Category:{{questionDetail?.result?.question_data?.category_name}}</h6>
+                <h6>{{questionDetail?.result?.question_data?.question_title}}</h6>
+            </div>
+
+            <div class="col-md-5">
+                <img class="img" src={{questionDetail?.result?.question_data?.image_url}}>
+            </div>
+        </div>
+     
+    </nb-card-body>
+
+</nb-card>

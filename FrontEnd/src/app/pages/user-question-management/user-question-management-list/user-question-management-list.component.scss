@@ -1,0 +1,31 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  .nb-card {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.min-width{
+  min-width:250px;
+}
+
+.set-width{
+  width: 35% !important;
+}
+
+.shape-rectangle{
+  height: 40px;
+  position: relative;
+}
+
+.cross{
+  position: absolute;
+  right: 15px;
+  top: 1px;
+  cursor: pointer;
+}
+
+.search-bar{
+  position: relative;
+}

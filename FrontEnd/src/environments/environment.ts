@@ -1,0 +1,19 @@
+// The file contents for the current environment will overwrite these during build.
+// The build system defaults to the dev environment which uses `environment.ts`, but if you do
+// `ng build --env=prod` then `environment.prod.ts` will be used instead.
+// The list of which env maps to which file can be found in `.angular-cli.json`.
+
+export const environment = {
+    production: false,
+    // baseUrl: 'https://dev.getwethink.com/we-think-admin/v1/api/admin/',
+    baseUrl: 'http://localhost:3001/we-think-admin/v1/api/admin/',
+    firebaseConfig: {
+        apiKey: "AIzaSyAaKUgQ5UD_XKFyd79ul9BtVEgIwrmDe0w",
+        authDomain: "wethink-d2548.firebaseapp.com",
+        projectId: "wethink-d2548",
+        storageBucket: "wethink-d2548.appspot.com",
+        messagingSenderId: "707826255093",
+        appId: "1:707826255093:web:830277330603e402b231bc",
+        measurementId: "G-6EJVY2SV6N"
+    }
+};

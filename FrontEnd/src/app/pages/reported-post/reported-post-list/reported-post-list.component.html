@@ -1,0 +1,85 @@
+<nb-card>
+  <nb-card-header> Reported Post </nb-card-header>
+  <nb-card-body>
+    <div class="portlet-body scroll">
+      <span class="search-bar">
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          (keyup)="searchReportedPost($event)"
+          [value]="search"
+          class="size-large status-basic shape-rectangle"
+          id="input-search"
+          placeholder="Search"
+        />
+        <span
+          aria-hidden="true"
+          *ngIf="search !== ''"
+          class="cross"
+          (click)="clearSearch()"
+          >&times;</span
+        >
+      </span>
+      <table
+        class="mt-3 table table-striped table-bordered table-hover table-checkable order-column"
+      >
+        <caption></caption>
+        <thead>
+          <tr>
+            <th id="sno">S No.</th>
+            <th id="title">Title</th>
+            <th id="category">Category</th>
+            <th id="count">Reported Count</th>
+            <th id="status">Status</th>
+            <th id="action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class=""
+            *ngFor="let reported of data | paginate : config; let i = index"
+          >
+            <td>{{ i + 1 + (pageNo - 1) * limit }}</td>
+            <td>{{ reported.question_title }}</td>
+            <td>{{ reported.category_name }}</td>
+            <td>{{ reported.reported_count }}</td>
+            <td>
+              <span class="blue" *ngIf="reported.report_status === 1"
+                >Pending</span
+              >
+              <span class="green" *ngIf="reported.report_status === 2"
+                >Accepted</span
+              >
+              <span class="red" *ngIf="reported.report_status === 3"
+                >Rejected</span
+              >
+            </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="goToView(reported.question_id)"
+              >
+                View
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="noData">
+            <td class="text-center" [attr.colspan]="colSpan">
+              No data available
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="text-center" [attr.colspan]="colSpan">
+              <pagination-controls
+                (pageChange)="pageChanged($event)"
+              ></pagination-controls>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

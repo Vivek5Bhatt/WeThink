@@ -1,0 +1,108 @@
+<nb-card class="nb-card">
+  <nb-card-header *ngIf="requestDetails">
+    <div *ngIf="requestDetails.status">
+      Request Verification
+      <button class="btn col-sm-1 mx-2 btn-danger float-right" *ngIf="requestDetails.status==1 || requestDetails.status==4" (click)="openRejectReason()">Reject</button>
+      <button class="btn col-sm-1 mx-2 btn-success float-right" *ngIf="requestDetails.status==1 || requestDetails.status==4" (click)="onVerifiy()">Verify</button>
+      <button class="btn col-sm-1 mx-2 float-right" style="color: green;font-size: 17px;font-weight: 600;" *ngIf="requestDetails.status==2">Verified</button>
+   
+      <p class="btn col-sm-1 mx-2  float-right" style="color: red;font-size: 17px;font-weight: 600;" *ngIf="requestDetails.status==3">Rejected</p>
+
+    </div>
+  </nb-card-header>
+  <nb-card-body *ngIf="requestDetails">
+    <div class="font-row" >
+      <div class="form-group row mt-3">
+        <div class="col-sm-2 d-inline-block pl-4">
+          <img *ngIf="requestDetails.profile_picture" [src]="requestDetails.profile_picture" alt="user image" height="100" width="100" >
+          <img *ngIf="!requestDetails.profile_picture" src="assets/images/default.jpg" alt="user image" height="100" width="100">
+        </div>
+        <div class="col-sm-10 mt-4 d-inline-block">
+          <div>
+            <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.user_name">
+              <label for="input-first_name" class="label col-sm-4 p-0">Username :</label>
+              
+              <p class="col-sm-8 d-inline-block">{{requestDetails.user_name}}</p>
+            </div>
+            <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.full_name">
+              <label for="input-last_name" class="label col-sm-4 p-0">Full Name :</label>
+              <p class="col-sm-8 d-inline-block">{{requestDetails.full_name}}</p>
+            </div>
+          </div>
+
+          <div>
+            <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.first_name">
+              <label for="input-first_name" class="label col-sm-4 p-0">First Name :</label>
+              
+              <p class="col-sm-8 d-inline-block">{{requestDetails.first_name}}</p>
+            </div>
+            <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.last_name">
+              <label for="input-full_name" class="label col-sm-4 p-0">Last Name :</label>
+              <p class="col-sm-8 d-inline-block">{{requestDetails.last_name}}</p>
+            </div>
+            
+          </div>
+          <div class="mt-2">
+            <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.email">
+              <label for="input-email" class="label col-sm-4 p-0">Email :</label>
+              <p class="col-sm-8 d-inline-block">{{requestDetails.email}}</p>
+            </div>
+            <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.phone_number">
+              <label for="input-phone_no" class="label col-sm-4 p-0" >Phone Number :</label>
+              <p class="col-sm-8 d-inline-block">{{requestDetails.phone_number}}</p>
+            </div>
+           
+          </div>
+          <div class="mt-2">
+            <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.category_name">
+              <label for="input-category" class="label col-sm-4 p-0">Category :</label>
+              <p class="col-sm-8 d-inline-block">{{requestDetails.category_name}}</p>
+            </div>
+            <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.full_name">
+              <label for="input-known_as" class="label col-sm-4 p-0">Known As :</label>
+              <p class="col-sm-8 d-inline-block">{{requestDetails.working_name}}</p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <div class="form-group row mt-2" *ngIf="requestDetails.id_type">
+        <div class="col pl-0" >
+          <label for="input-email" class="label col-sm-2 col-form-label">Id Type :</label>
+          {{requestDetails.id_type}}
+        </div>
+      </div>
+      <div class="form-group row mt-3" *ngIf="requestDetails.photo_id_front">
+        <div class="col-sm-6 d-inline-block">
+          <label for="input-email" class="label col-sm-4 pl-0">Front Page of ID :</label>
+          <button class="btn btn-success" (click)="downloadImage(requestDetails.photo_id_front)">Download</button>
+        </div>
+        <div class="col-sm-6 d-inline-block" *ngIf="requestDetails.photo_id_back">
+          <label for="input-email" class="label col-sm-4 pl-0">Back Page of ID :</label>
+          <button class="btn btn-success" (click)="downloadImage(requestDetails.photo_id_back)">Download</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group  pl-3 mt-5" *ngIf="requestDetails.user_comment">
+      <p class="font-weight-bold">Why this account should be verified?</p>
+     
+      {{requestDetails.user_comment}}
+
+    </div>
+    <div class="mt-5" *ngIf="rejectReasonList !=null && rejectReasonList.length>0">
+      <p class="font-weight-bold">Reason for Rejection</p>
+      <div class="search-results" (scrolled)= "scrollDown()" infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle" [scrollWindow]="false">
+        <ul class="list-group">
+          <li class="list-group-item p-0" *ngFor="let reason of rejectReasonList">
+              <div class="reason-list">
+                <div>{{reason.reject_reason}}</div>
+                <div class="reason-time"><p>{{reason.rejected_at | date:"short"}}</p></div>
+              </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<ngx-reject-response-prompt (messageEvent)="receiveMessage($event)" ></ngx-reject-response-prompt>

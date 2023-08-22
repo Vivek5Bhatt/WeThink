@@ -1,0 +1,206 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowViewAccountInfo",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetAccountPasswordPolicy",
+                "iam:GetAccountSummary",
+                "iam:ListVirtualMFADevices"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowManageOwnPasswords",
+            "Effect": "Allow",
+            "Action": [
+                "iam:ChangePassword",
+                "iam:GetUser"
+            ],
+            "Resource": "arn:aws:iam::*:user/$${aws:username}"
+        },
+        {
+            "Sid": "AllowManageOwnAccessKeys",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateAccessKey",
+                "iam:DeleteAccessKey",
+                "iam:ListAccessKeys",
+                "iam:UpdateAccessKey"
+            ],
+            "Resource": "arn:aws:iam::*:user/$${aws:username}"
+        },
+        {
+            "Sid": "AllowManageOwnSSHPublicKeys",
+            "Effect": "Allow",
+            "Action": [
+                "iam:DeleteSSHPublicKey",
+                "iam:GetSSHPublicKey",
+                "iam:ListSSHPublicKeys",
+                "iam:UpdateSSHPublicKey",
+                "iam:UploadSSHPublicKey"
+            ],
+            "Resource": "arn:aws:iam::*:user/$${aws:username}"
+        },
+        {
+            "Sid": "AllowManageOwnVirtualMFADevice",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateVirtualMFADevice",
+                "iam:DeleteVirtualMFADevice"
+            ],
+            "Resource": "arn:aws:iam::*:mfa/$${aws:username}"
+        },
+        {
+            "Sid": "AllowManageOwnUserMFA",
+            "Effect": "Allow",
+            "Action": [
+                "iam:DeactivateMFADevice",
+                "iam:EnableMFADevice",
+                "iam:ListMFADevices",
+                "iam:ResyncMFADevice"
+            ],
+            "Resource": "arn:aws:iam::*:user/$${aws:username}"
+        },
+        {
+            "Sid": "AllowManageS3DevBuckets",
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::wethink-dev-codepipeline/*",
+                "arn:aws:s3:::wethink-dev/*",
+                "arn:aws:s3:::wethink-dev-document/*",
+                "arn:aws:s3:::wethink-dev-images/*",
+                "arn:aws:s3:::wethink-dev-transcoded/*",
+                "arn:aws:s3:::wethink-dev-video-thumbnail/*"
+            ]
+        },
+        {
+            "Sid": "AllowDescribeAllParameters",
+            "Effect": "Allow",
+            "Action": [
+                "ssm:DescribeParameters"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowConfigureDevParameters",
+            "Effect": "Allow",
+            "Action": [
+                "ssm:PutParameter",
+                "ssm:DeleteParameter",
+                "ssm:GetParameterHistory",
+                "ssm:GetParametersByPath",
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+                "ssm:DeleteParameters"
+            ],
+            "Resource": [
+                "arn:aws:ssm:${region}:${account_id}:parameter/wethink-dev/*",
+                "arn:aws:ssm:${region}:${account_id}:parameter/wethink-pre-dev/*"
+            ]
+        },
+        {
+            "Sid": "DenyConfigurePrdParameters",
+            "Effect": "Deny",
+            "Action": [
+                "ssm:PutParameter",
+                "ssm:DeleteParameter",
+                "ssm:GetParameterHistory",
+                "ssm:GetParametersByPath",
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+                "ssm:DeleteParameters"
+            ],
+            "Resource": "arn:aws:ssm:${region}:${account_id}:parameter/wethink-prd/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:StartSession",
+                "ssm:SendCommand"
+            ],
+            "Resource": [
+                "arn:aws:ec2:${region}:${account_id}:instance/*"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "ssm:resourceTag/Environment": [
+                        "dev"
+                    ]
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:DescribeSessions",
+                "ssm:GetConnectionStatus",
+                "ssm:DescribeInstanceInformation",
+                "ssm:DescribeInstanceProperties",
+                "ec2:DescribeInstances"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:CreateDocument",
+                "ssm:UpdateDocument",
+                "ssm:GetDocument"
+            ],
+            "Resource": "arn:aws:ssm:${region}:${account_id}:document/SSM-SessionManagerRunShell"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:TerminateSession",
+                "ssm:ResumeSession"
+            ],
+            "Resource": [
+                "arn:aws:ssm:*:*:session/$${aws:username}-*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSecurityGroupRules",
+                "ec2:DescribeTags"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:RevokeSecurityGroupIngress",
+                "ec2:AuthorizeSecurityGroupEgress",
+                "ec2:RevokeSecurityGroupEgress",
+                "ec2:ModifySecurityGroupRules",
+                "ec2:UpdateSecurityGroupRuleDescriptionsIngress",
+                "ec2:UpdateSecurityGroupRuleDescriptionsEgress"
+            ],
+            "Resource": [
+                "arn:aws:ec2:${region}:${account_id}:security-group/*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/Environment": "pre-dev"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:ModifySecurityGroupRules"
+            ],
+            "Resource": [
+                "arn:aws:ec2:${region}:${account_id}:security-group-rule/*"
+            ]
+        }
+    ]
+}

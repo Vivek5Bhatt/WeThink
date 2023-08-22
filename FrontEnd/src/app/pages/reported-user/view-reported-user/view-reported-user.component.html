@@ -1,0 +1,258 @@
+<nb-card class="nb-card" *ngIf="userData">
+  <nb-card-header>
+    Reported User Detail
+    <!-- <div class="float-right" *ngIf="userData.report_status">
+      <button
+        *ngIf="userData.report_status == 1"
+        class="btn btn-success"
+        (click)="updateReportedUser(2)"
+      >
+        Accept
+      </button>
+      <button
+        *ngIf="userData.report_status == 1"
+        class="ml-2 btn btn-danger"
+        (click)="openRejectReason()"
+      >
+        Reject
+      </button>
+      <span class="green" *ngIf="userData.report_status == 2">Accepted</span>
+      <span class="red" *ngIf="userData.report_status == 3">Rejected</span>
+    </div> -->
+  </nb-card-header>
+  <nb-card-body>
+    <div>
+      <div class="row" *ngIf="reportedData">
+        <div class="col-sm-9">
+          <div class="form-group row mb-3" *ngIf="reportedData.user_name">
+            <h6 class="h6 col-sm-4 col-form-h6 mb-0">User Name:</h6>
+            <div class="col-sm-8">
+              {{ reportedData.user_name }}
+            </div>
+          </div>
+          <div class="form-group row mb-3" *ngIf="reportedData.first_name">
+            <h6 class="h6 col-sm-4 col-form-h6 mb-0">First Name:</h6>
+            <div class="col-sm-8">
+              {{ reportedData.first_name }}
+            </div>
+          </div>
+          <div class="form-group row mb-3" *ngIf="reportedData.last_name">
+            <h6 class="h6 col-sm-4 col-form-h6 mb-0">Last Name:</h6>
+            <div class="col-sm-8">
+              {{ reportedData.last_name }}
+            </div>
+          </div>
+          <div class="form-group row mb-3" *ngIf="reportedData.email">
+            <h6 class="h6 col-sm-4 col-form-h6 mb-0">Email:</h6>
+            <div class="col-sm-8">
+              {{ reportedData.email }}
+            </div>
+          </div>
+          <div class="form-group row mb-3" *ngIf="reportedData.phone_number">
+            <h6 class="h6 col-sm-4 col-form-h6 mb-0">Phone Number:</h6>
+            <div class="col-sm-8">
+              {{ reportedData.phone_number }}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row" *ngIf="reportedData.profile_picture">
+            <div class="col-sm-12">
+              <img
+                alt="Post Image"
+                class="img-fluid"
+                [src]="reportedData.profile_picture"
+              />
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="reportedData.website">
+            <div class="col-sm-12">
+              <a href="{{ reportedData.website }}" target="_blank"
+                >Website Visit</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-sm-12">
+          <div class="form-group row" *ngIf="userData">
+            <div class="portlet-body scroll col-sm-12">
+              <h6>Reported By</h6>
+              <!-- <span class="search-bar pr-3">
+                <input
+                  type="text"
+                  nbInput
+                  fullWidth
+                  (keyup)="searchUser($event)"
+                  [value]="search"
+                  class="size-large status-basic shape-rectangle"
+                  id="input-search"
+                  placeholder="Search"
+                />
+                <span
+                  aria-hidden="true"
+                  *ngIf="search !== ''"
+                  class="cross"
+                  (click)="clearSearch()"
+                  >&times;</span
+                >
+              </span>
+              <span class="col-md-3">
+                <input
+                  nbInput
+                  placeholder="Pick Start Date"
+                  [(ngModel)]="startDate"
+                  class="pl-2 status-basic shape-rectangle"
+                  [nbDatepicker]="datepicker1"
+                />
+                <nb-datepicker [max]="max" #datepicker1></nb-datepicker>
+              </span>
+              <span class="col-md-3">
+                <input
+                  nbInput
+                  placeholder="Pick End Date"
+                  [(ngModel)]="endDate"
+                  class="pl-2 status-basic shape-rectangle"
+                  [nbDatepicker]="datepicker2"
+                />
+                <nb-datepicker [max]="max" #datepicker2></nb-datepicker>
+              </span>
+              <span class="col-md-2">
+                <button class="btn btn-primary" (click)="getUserDetail(id)">
+                  Search
+                </button>
+              </span> -->
+              <table
+                class="mt-3 table table-striped table-bordered table-hover table-checkable order-column"
+              >
+                <caption></caption>
+                <thead>
+                  <tr>
+                    <th id="sno">S No.</th>
+                    <th id="username">Username</th>
+                    <th id="name">Name</th>
+                    <th id="count">Reason</th>
+                    <th id="reported" (click)="changeOrder()">
+                      Reported Date & Time
+                      <nb-icon *ngIf="sortType == 1" icon="arrow-up"></nb-icon>
+                      <nb-icon
+                        *ngIf="sortType == 2"
+                        icon="arrow-down"
+                      ></nb-icon>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class=""
+                    *ngFor="
+                      let user of userData | paginate : config;
+                      let i = index
+                    "
+                  >
+                    <td>{{ i + 1 + (pageNo - 1) * limit }}</td>
+                    <td>{{ user.user_name }}</td>
+                    <td>{{ user.full_name }}</td>
+                    <td>{{ user.report_reason }}</td>
+                    <td>
+                      {{
+                        user.reported_date | date : "MM-dd-yyyy hh:mm a" : "gmt"
+                      }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="noData">
+                    <td class="text-center" [attr.colspan]="colSpan">
+                      No data available
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="text-center" [attr.colspan]="colSpan">
+                      <pagination-controls (pageChange)="pageChanged($event)">
+                      </pagination-controls>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group row" *ngIf="reasons">
+            <div class="col-sm-12">
+              <h6 *ngIf="reasons && reasons[0] && !reasons[0].is_accepted">
+                Reason For Rejection
+              </h6>
+              <h6 *ngIf="reasons && reasons[0] && reasons[0].is_accepted">
+                Accepted Details
+              </h6>
+              <ul>
+                <li *ngFor="let reason of reasons">
+                  <div class="d-inline-block">
+                    <div>{{ reason.reject_reason }}</div>
+                    <div class="float-right">
+                      {{ reason.created_at | date : "MMM dd, y" }}
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<!-- <div class="modal" tabindex="-1" id="modal" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reject Request</h5>
+        <button
+          (click)="closeRejectReason()"
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Please enter the reason for rejection</p>
+        <textarea
+          [(ngModel)]="reason"
+          nbInput
+          fullWidth
+          rows="6"
+          placeholder=""
+        ></textarea>
+        <p class="red" *ngIf="reasonError">Please enter reason for rejection</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          (click)="updateReportedUser(3)"
+          type="button"
+          class="btn btn-danger"
+        >
+          Reject
+        </button>
+        <button
+          (click)="closeRejectReason()"
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->

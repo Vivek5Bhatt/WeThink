@@ -1,0 +1,56 @@
+<h1 id="title" class="title">Login</h1>
+<p class="sub-title">Hello! Log in with your email.</p>
+
+<form (submit)="login()" [formGroup]="data" aria-labelledby="title">
+
+  <div class="form-control-group">
+    <label class="label" for="input-email">Email address:</label>
+    <input nbInput
+           fullWidth
+           class="input-full-width size-large status-basic shape-rectangle"
+           formControlName="email"
+           name="email"
+           id="input-email"
+           pattern=".+@.+\..+"
+           placeholder="Email address"
+           fieldSize="large"
+           autofocus>
+    <ng-container *ngIf="submitted && data.controls['email'].errors">
+      <p class="caption status-danger" *ngIf="data.controls['email'].errors.required">
+        Email is required!
+      </p>
+      <p class="caption status-danger" *ngIf="data.controls['email'].errors.pattern">
+        Please provide valid email
+      </p>
+    </ng-container>
+  </div>
+
+  <div class="form-control-group">
+    <span class="label-with-link">
+      <label class="label" for="input-password">Password:</label>
+      <a  routerLink="../request-password">Forgot Password?</a>
+    </span>
+    <input nbInput
+           fullWidth
+           formControlName="password"
+           class="input-full-width size-large status-basic shape-rectangle"
+           name="password"
+           type="password"
+           id="input-password"
+           placeholder="Password"
+           fieldSize="large">
+    <ng-container *ngIf="submitted && data.controls['password'].errors">
+      <p class="caption status-danger" *ngIf="data.controls['password'].errors.required">
+        Password is required!
+      </p>
+    </ng-container>
+  </div>
+
+  <button nbButton
+          fullWidth
+          status="primary"
+          size="large"
+          class="appearance-filled full-width size-large status-primary shape-rectangle">
+    Log In
+  </button>
+</form>

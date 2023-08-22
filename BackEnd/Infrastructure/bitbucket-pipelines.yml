@@ -1,0 +1,143 @@
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: BUILD LAMBDA dbSyncVideoTranscoderFunction
+            image: node:14.20
+            caches:
+              - node
+            script:
+              - cd src/dbSyncVideoTranscoderFunction
+              - npm install
+              - rm -rf package-lock.json
+            artifacts:
+              - src/dbSyncVideoTranscoderFunction/**
+        - step:
+            name: BUILD LAMBDA s3VideoTriggerForTranscoding
+            image: node:14.20
+            caches:
+              - node
+            script:
+              - cd src/s3VideoTriggerForTranscoding
+              - npm install
+              - rm -rf package-lock.json
+            artifacts:
+              - src/s3VideoTriggerForTranscoding/**
+        - step:
+            name: BUILD LAMBDA sendPollNotification
+            image: node:14.20
+            caches:
+              - node
+            script:
+              - cd src/sendPollNotification
+              - npm install
+              - rm -rf package-lock.json
+            artifacts:
+              - src/sendPollNotification/**
+    - step:
+        name: ZIP the LAMBDAS
+        image: atlassian/default-image:2
+        script:
+          - cd src/dbSyncVideoTranscoderFunction
+          - zip -r artifact.zip *
+          - cd ../s3VideoTriggerForTranscoding
+          - zip -r artifact.zip *
+          - cd ../sendPollNotification
+          - zip -r artifact.zip *
+        artifacts:
+          - src/dbSyncVideoTranscoderFunction/artifact.zip
+          - src/s3VideoTriggerForTranscoding/artifact.zip
+          - src/sendPollNotification/artifact.zip
+    - parallel:
+        - step:
+            name: DEVELOPMENT Terraform plan
+            image: hashicorp/terraform
+            script:
+              - cd env/dev
+              - terraform init
+              - terraform validate
+              - terraform plan
+        - step:
+            name: PRODUCTION Terraform plan
+            image: hashicorp/terraform
+            script:
+              - cd env/prd
+              - terraform init
+              - terraform validate
+              - terraform plan
+  branches:
+    master:
+      - parallel:
+          - step:
+              name: BUILD LAMBDA dbSyncVideoTranscoderFunction
+              image: node:14.20
+              caches:
+                - node
+              script:
+                - cd src/dbSyncVideoTranscoderFunction
+                - npm install
+                - rm -rf package-lock.json
+              artifacts:
+                - src/dbSyncVideoTranscoderFunction/**
+          - step:
+              name: BUILD LAMBDA s3VideoTriggerForTranscoding
+              image: node:14.20
+              caches:
+                - node
+              script:
+                - cd src/s3VideoTriggerForTranscoding
+                - npm install
+                - rm -rf package-lock.json
+              artifacts:
+                - src/s3VideoTriggerForTranscoding/**
+          - step:
+              name: BUILD LAMBDA sendPollNotification
+              image: node:14.20
+              caches:
+                - node
+              script:
+                - cd src/sendPollNotification
+                - npm install
+                - rm -rf package-lock.json
+              artifacts:
+                - src/sendPollNotification/**
+      - step:
+          name: ZIP the LAMBDAS
+          image: atlassian/default-image:2
+          script:
+            - cd src/dbSyncVideoTranscoderFunction
+            - zip -r artifact.zip *
+            - cd ../s3VideoTriggerForTranscoding
+            - zip -r artifact.zip *
+            - cd ../sendPollNotification
+            - zip -r artifact.zip *
+          artifacts:
+            - src/dbSyncVideoTranscoderFunction/artifact.zip
+            - src/s3VideoTriggerForTranscoding/artifact.zip
+            - src/sendPollNotification/artifact.zip
+      - step:
+          name: Security Scan
+          image: hashicorp/terraform
+          script:
+            - pipe: atlassian/git-secrets-scan:0.5.1
+              variables:
+                FILES: '*.tf *.yml *.json'
+      - parallel:
+          - step:
+              name: Deploy to DEVELOPMENT
+              image: hashicorp/terraform
+              trigger: manual
+              script:
+                - cd env/dev
+                - terraform init
+                - terraform plan
+                - terraform apply -auto-approve
+          - step:
+              name: Deploy to PRODUCTION
+              image: hashicorp/terraform
+              trigger: manual
+              script:
+                - cd env/prd
+                - terraform init
+                - terraform plan
+                - terraform apply -auto-approve

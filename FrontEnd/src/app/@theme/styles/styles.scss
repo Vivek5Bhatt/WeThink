@@ -1,0 +1,33 @@
+
+// themes - our custom or/and out of the box themes
+@import 'themes';
+@import 'node_modules/angular2-toaster/toaster';
+// framework component themes (styles tied to theme variables)
+@import 'node_modules/@nebular/theme/styles/globals';
+@import 'node_modules/@nebular/theme/styles/all';
+@import 'node_modules/@nebular/auth/styles/globals';
+
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+@import 'node_modules/bootstrap/scss/grid';
+@import './layout';
+@import './overrides';
+@import 'angular2-toaster/toaster.css';
+
+// install the framework and custom global styles
+@include nb-install() {
+
+  // framework global styles
+  @include nb-theme-global();
+  @include nb-auth-global();
+  @include ngx-layout();
+
+  // @include nb-overrides();
+}
+
+.navigation {
+  .back-link {
+      display: none !important;
+  }
+}

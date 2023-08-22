@@ -1,0 +1,75 @@
+<nb-card>
+    <nb-card-header>
+        User Management
+    </nb-card-header>
+    <nb-card-body>
+        <div class="portlet-body scroll">
+            <span class="search-bar">
+                <input type="text" nbInput fullWidth (keyup)="searchUser($event)" [value]="userSearch"
+                    class="size-large status-basic shape-rectangle" id="input-search"
+                    placeholder="Search -> User Name/Name/Email">
+                <span aria-hidden="true" *ngIf="userSearch !== ''" class="cross" (click)="clearSearch();">&times;</span>
+            </span>
+            <table class="mt-3 table table-striped table-bordered table-hover table-checkable order-column">
+                <caption></caption>
+                <thead>
+                    <tr>
+                        <th class="width" id="id">User Id</th>
+                        <th id="id">User Name</th>
+                        <th id="name">Name</th>
+                        <th id="email">Email</th>
+                        <th id="phone">Phone Number</th>
+                        <th id="created">Created Date</th>
+                        <th id="status">Status</th>
+                        <th id="action">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="" *ngFor="let user of data | paginate: userConfig">
+                        <td>
+                            {{ user.user_id }}
+                        </td>
+                        <td>
+                            {{ user.user_name }}
+                        </td>
+                        <td>
+                            {{ user.full_name }}
+                        </td>
+                        <td>
+                            {{ user.email }}
+                        </td>
+                        <td>{{user.phone_number}}
+                        </td>
+                        <td>
+                            {{ user.created_at| date: 'MM-dd-yyyy' }}
+                        </td>
+                        <td>
+                            {{ user.is_active ? "Active" : "Deactive" }}
+                        </td>
+                        <td>
+                            <button class="btn m-78 btn-primary" (click)="goToEdit(user.user_id)">View</button>
+                            <button class="btn m-78 btn-warning" (click)="onDeleteSuspendConfirm(user.user_id, 1)"
+                                *ngIf="user.is_active">Suspend</button>
+                            <button class="btn m-78 btn-warning" (click)="onDeleteSuspendConfirm(user.user_id, 3)"
+                                *ngIf="!user.is_active">Restore</button>
+                            <button class="btn m-78 btn-danger"
+                                (click)="onDeleteSuspendConfirm(user.user_id, 2)">Delete</button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="noData">
+                        <td class="text-center" [attr.colspan]="colSpan">
+                            No data available
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" [attr.colspan]="colSpan">
+                            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </nb-card-body>
+</nb-card>

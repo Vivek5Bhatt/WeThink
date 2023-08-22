@@ -1,0 +1,12 @@
+<nb-card>
+  <nb-card-header *ngIf="!key">Add Reason:</nb-card-header>
+  <nb-card-header *ngIf="key">Update Reason:</nb-card-header>
+  <nb-card-body>
+    <input maxlength="30" [(ngModel)]="name" placeholder="Reason">
+    <span>Total Character Left:{{30-name.length}}</span>
+  </nb-card-body>
+  <nb-card-footer style="text-align: center;">
+    <button class="btn m-2 btn-danger" (click)="cancel()">Cancel</button>
+    <button class="btn m-2 btn-success" (click)="addAndUpdateReason()">Submit</button>
+  </nb-card-footer>
+</nb-card>

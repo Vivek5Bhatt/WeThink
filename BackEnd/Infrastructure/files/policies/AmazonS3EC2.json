@@ -1,0 +1,36 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListObjects"
+            ],
+            "Resource": [
+                "${codepipeline_bucket_arn}",
+                "${main_bucket_arn}",
+                "${document_bucket_arn}",
+                "${images_bucket_arn}",
+                "${transcoded_bucket_arn}",
+                "${video_thumbnail_bucket_arn}"
+            ]
+        },
+        {
+            "Sid": "Stmt1438102123000",
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": [
+                "${codepipeline_bucket_arn}/*",
+                "${main_bucket_arn}/*",
+                "${document_bucket_arn}/*",
+                "${images_bucket_arn}/*",
+                "${transcoded_bucket_arn}/*",
+                "${video_thumbnail_bucket_arn}/*"
+            ]
+        }
+    ]
+}

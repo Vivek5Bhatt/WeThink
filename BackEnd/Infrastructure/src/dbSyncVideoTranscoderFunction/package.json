@@ -1,0 +1,11 @@
+{
+  "name": "triggerforvideoupload",
+  "version": "1.0.0",
+  "description": "Lambda function that triggers on video upload on S3",
+  "main": "index.js",
+  "dependencies": {
+    "node-rest-client": "^3.1.0",
+    "pg": "^8.7.1",
+    "uuid": "^8.3.2"
+  }
+}

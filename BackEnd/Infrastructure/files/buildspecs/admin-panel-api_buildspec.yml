@@ -1,0 +1,77 @@
+version: 0.2
+
+env:
+  parameter-store:
+    PORT: "/${APP_ENV}/admin-panel-api/PORT"
+    DB_USERNAME: "/${APP_ENV}/admin-panel-api/DB_USERNAME"
+    DB_PASSWORD: "/${APP_ENV}/admin-panel-api/DB_PASSWORD"
+    DB_DATABASE: "/${APP_ENV}/admin-panel-api/DB_DATABASE"
+    DB_HOST: "/${APP_ENV}/admin-panel-api/DB_HOST"
+    DB_PORT: "/${APP_ENV}/admin-panel-api/DB_PORT"
+    TWILIO_ACCOUNT_SID: "/${APP_ENV}/admin-panel-api/TWILIO_ACCOUNT_SID"
+    TWILIO_AUTH_TOKEN: "/${APP_ENV}/admin-panel-api/TWILIO_AUTH_TOKEN"
+    TWILIO_FROM_NUMBER: "/${APP_ENV}/admin-panel-api/TWILIO_FROM_NUMBER"
+    JWT_SECRET: "/${APP_ENV}/admin-panel-api/JWT_SECRET"
+    GOOGLE_CLIENT_ID: "/${APP_ENV}/admin-panel-api/GOOGLE_CLIENT_ID"
+    CYPHER_KEY: "/${APP_ENV}/admin-panel-api/CYPHER_KEY"
+    ENV: "/${APP_ENV}/admin-panel-api/ENV"
+    RESET_PASSWORD_TEMPLATE_ID: "/${APP_ENV}/admin-panel-api/RESET_PASSWORD_TEMPLATE_ID"
+    OS_CONNECTION_STRING: "/${APP_ENV}/mobile-app-api/OS_CONNECTION_STRING"
+    SEND_GRID_FROM_EMAIL: "/${APP_ENV}/admin-panel-api/SEND_GRID_FROM_EMAIL"
+    SEND_GRID_FROM_NAME: "/${APP_ENV}/admin-panel-api/SEND_GRID_FROM_NAME"
+    SENDGRID_API_KEY: "/${APP_ENV}/admin-panel-api/SENDGRID_API_KEY"
+    PASSWORD_RESET_URL: "/${APP_ENV}/admin-panel-api/PASSWORD_RESET_URL"
+    USER_BUCKET_NAME: "/${APP_ENV}/admin-panel-api/USER_BUCKET_NAME"
+    DOCUMENT_BUCKET_NAME: "/${APP_ENV}/admin-panel-api/DOCUMENT_BUCKET_NAME"
+    AWS_REGION: "/${APP_ENV}/admin-panel-api/AWS_REGION"
+    FIREBASE_KEY: "/${APP_ENV}/admin-panel-api/FIREBASE_KEY"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+    commands:
+      - echo Installing
+  build:
+    commands:
+      - ls
+      - echo "Inserting values into .env file"
+      - cp .env.example .env
+      - sed -i "s/^PORT=/PORT=$PORT/g" .env
+      - sed -i "s/^DB_USERNAME=/DB_USERNAME=$DB_USERNAME/g" .env
+      - sed -i "s/^DB_PASSWORD=/DB_PASSWORD=$DB_PASSWORD/g" .env
+      - sed -i "s/^DB_DATABASE=/DB_DATABASE=$DB_DATABASE/g" .env
+      - sed -i "s/^DB_HOST=/DB_HOST=$DB_HOST/g" .env
+      - sed -i "s/^DB_PORT=/DB_PORT=$DB_PORT/g" .env
+      - sed -i "s/^TWILIO_ACCOUNT_SID=/TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID/g" .env
+      - sed -i "s/^TWILIO_AUTH_TOKEN=/TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN/g" .env
+      - sed -i "s/^TWILIO_FROM_NUMBER=/TWILIO_FROM_NUMBER=$TWILIO_FROM_NUMBER/g" .env
+      - sed -i "s/^JWT_SECRET=/JWT_SECRET=$JWT_SECRET/g" .env
+      - sed -i "s/^GOOGLE_CLIENT_ID=/GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID/g" .env
+      - sed -i "s/^USER_BUCKET_NAME=/USER_BUCKET_NAME=$USER_BUCKET_NAME/g" .env
+      - sed -i "s/^AWS_REGION=/AWS_REGION=$AWS_REGION/g" .env
+      - sed -i "s/^CYPHER_KEY=/CYPHER_KEY=$CYPHER_KEY/g" .env
+      - sed -i "s/^ENV=/ENV=$ENV/g" .env
+      - sed -i "s|^PASSWORD_RESET_URL=|PASSWORD_RESET_URL=$PASSWORD_RESET_URL|g" .env
+      - sed -i "s/^RESET_PASSWORD_TEMPLATE_ID=/RESET_PASSWORD_TEMPLATE_ID=$RESET_PASSWORD_TEMPLATE_ID/g" .env
+      - sed -i "s|^OS_CONNECTION_STRING=|OS_CONNECTION_STRING=$OS_CONNECTION_STRING|g" .env
+      - sed -i "s/^SEND_GRID_FROM_EMAIL=/SEND_GRID_FROM_EMAIL=$SEND_GRID_FROM_EMAIL/g" .env
+      - sed -i "s/^SEND_GRID_FROM_NAME=/SEND_GRID_FROM_NAME=$SEND_GRID_FROM_NAME/g" .env
+      - sed -i "s/^SENDGRID_API_KEY=/SENDGRID_API_KEY=$SENDGRID_API_KEY/g" .env
+      - sed -i "s/^DOCUMENT_BUCKET_NAME=/DOCUMENT_BUCKET_NAME=$DOCUMENT_BUCKET_NAME/g" .env
+      - sed -i "s/^FIREBASE_KEY=*//g" .env
+      - echo $'\n'"FIREBASE_KEY=$FIREBASE_KEY" >> .env
+      - echo Installing source NPM dependencies.
+      - npm install --quiet
+      - npm install --unsafe-perm --quiet
+      - echo "Execute Sequelize Database migrations"
+      - npx sequelize-cli db:migrate
+  post_build:
+    commands:
+      - echo Build completed on `date`
+cache:
+  paths:
+    - "node_modules/**/*"
+artifacts:
+  files:
+    - "**/*"

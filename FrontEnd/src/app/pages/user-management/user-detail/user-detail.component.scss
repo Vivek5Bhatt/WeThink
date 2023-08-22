@@ -1,0 +1,39 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  .nb-card {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.min-width{
+  min-width:250px;
+}
+.input-full-width {
+  width: 80% !important;
+  max-width: 100% !important
+}
+
+.cross{
+  position: absolute;
+  top: 25px;
+  left:calc(80% + 10px);
+}
+
+.position{
+  position: relative;
+}
+
+img {
+  border-radius: 50%;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.label {
+  font-size: 16px !important;
+  }

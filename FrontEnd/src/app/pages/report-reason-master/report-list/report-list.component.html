@@ -1,0 +1,54 @@
+<nb-card>
+    <nb-card-header>
+        Report Reason Master
+    </nb-card-header>
+    <nb-card-body>
+        <div class="portlet-body scroll">
+            <span class="search-bar">
+                <input type="text" nbInput fullWidth (keyup)="searchReport($event)" [value]="search"
+                    class="size-large status-basic shape-rectangle" id="input-search" placeholder="Search">
+                <span aria-hidden="true" *ngIf="search !== ''" class="cross" (click)="clearSearch();">&times;</span>
+            </span>
+            <button class="btn btn-primary float-right" (click)="goToEdit('','',false)">Add Reason</button>
+            <table class="mt-3 table table-striped table-bordered table-hover table-checkable order-column">
+                <caption></caption>
+                <thead>
+                    <tr>
+                        <th id="id">SN.</th>
+                        <th id="name">Reason</th>
+                        <th id="created"> Created Date</th>
+                        <th id="action"> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="" *ngFor="let report of data| paginate: reportConfig ;index as i">
+                        <td>{{i+1}}</td>
+                        <td>
+                            {{ report.name }}
+                        </td>
+                        <td>
+                            {{ report.created_at| date: 'MM-dd-yyyy' }}
+                        </td>
+                        <td>
+                            <button class="btn m-2 btn-primary"
+                                (click)="goToEdit(report.id ,report.name,true)">Edit</button>
+                            <button class="btn m-2 btn-danger" (click)="onDelete(report.id)">Delete</button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="noData">
+                        <td class="text-center" [attr.colspan]="colSpan">
+                            No data available
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" [attr.colspan]="colSpan">
+                            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </nb-card-body>
+</nb-card>

@@ -1,0 +1,63 @@
+<nb-card class="nb-card">
+  <nb-card-header>
+    Question Detail
+  </nb-card-header>
+
+  <nb-card-body>
+    <div *ngIf="questionData">
+      <div class="form-group row" *ngIf="questionData.question_data.question_title">
+        <label for="input-email" class="label col-sm-3 col-form-label">Title :</label>
+        <div class="col-sm-9">
+          <div> {{ questionData.question_data.question_title}}</div>
+
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="questionData.question_data.category_name">
+        <label for="username" class="label col-sm-3 col-form-label">Category :</label>
+        <div class="col-sm-9">
+          <div> {{ questionData.question_data.category_name}}</div>
+        </div>
+      </div>
+
+      <div class="form-group row" *ngIf="questionData.question_data.image_url">
+        <label for="username" class="label col-sm-3 col-form-label">Image :</label>
+        <div class="col-sm-9">
+          <div *ngIf="questionData.question_data.image_url"><a href="{{questionData.question_data.image_url}}"
+              target="_blank">View Image</a></div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="questionData.options">
+        <label for="first-name" class="label col-sm-3 col-form-label">Options :</label>
+        <div class="col-sm-9">
+          <div *ngFor="let item of questionData.options; let i=index" class="position">
+            <div> {{ item.name}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="questionData.question_data.user_id">
+        <label for="username" class="label col-sm-3 col-form-label">User Name :</label>
+        <div class="col-sm-9">
+          <div class="pointer color" (click)="goToUser(questionData.question_data.user_id)"> {{
+            questionData.question_data.full_name}}</div>
+        </div>
+      </div>
+      <table>
+        <caption></caption>
+        <tr>
+          <th id="county">County</th>
+          <th id="countyCount">County Count</th>
+          <th id="state">State</th>
+          <th id="stateCount">State Count</th>
+        </tr>
+        <tr *ngFor="let item of questionData.state_county_count; let i=index">
+          <td>{{ item.county}}</td>
+          <td> {{ item.countycount}}</td>
+          <td>{{ item.state}}</td>
+          <td>{{ item.statecount}}</td>
+        </tr>
+      </table>
+
+    </div>
+
+  </nb-card-body>
+</nb-card>

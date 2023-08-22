@@ -1,0 +1,91 @@
+#reported {
+    cursor: pointer;
+}
+
+.buttonAlign {
+    float: right
+}
+
+.label {
+    font-size: 16px !important;
+}
+
+.form-group {
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.nb-theme-default h6,
+.nb-theme-default .h6 {
+    font-size: 18px !important;
+    line-height: 24px !important;
+}
+
+.option {
+    padding: 8px;
+    background-color: #eee;
+    border: 1px solid #d4d4d4;
+    margin-bottom: 8px;
+}
+
+.shape-rectangle {
+    height: 40px;
+    position: relative;
+}
+
+.cross {
+    position: absolute;
+    right: 22px;
+    top: 1px;
+    cursor: pointer;
+}
+
+.search-bar {
+    position: relative;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #d4d4d4;
+
+    li {
+        border-bottom: 1px solid #d4d4d4;
+        padding: 8px 15px;
+    }
+
+    li:last-child {
+        border-bottom: 0;
+    }
+}
+
+.d-inline-block {
+    width: 100%;
+}
+
+.green {
+    color: #28a745;
+}
+
+.red {
+    color: #dc3545;
+}
+
+button:focus {
+    outline: 0;
+}
+
+textarea {
+    background-color: #edf1f7;
+    border-color: #e4e9f2;
+    width: 100%;
+}
+
+img {
+    max-width: 125px;
+}
+
+a {
+    text-decoration: none;
+}

@@ -1,0 +1,34 @@
+version: 0.2
+
+env:
+  parameter-store:
+    ENV_FILE: "/${APP_ENV}/admin-panel/CONFIG_FILE"
+    ENV_FILE_PROD: "/${APP_ENV}/admin-panel/CONFIG_FILE"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - echo Installing
+  pre_build:
+    commands:
+      - echo Installing source NPM dependencies.
+      - npm install --quiet
+  build:
+    commands:
+      - ls
+      - echo "$ENV_FILE" > src/environments/environment.ts
+      - echo "$ENV_FILE_PROD" > src/environments/environment.prod.ts
+      - echo Build started on `date`
+      - echo Compiling the Node.js code
+      - npm run build
+  post_build:
+    commands:
+      - echo Build completed on `date`
+cache:
+  paths:
+    - "node_modules/**/*"
+artifacts:
+  files:
+    - "**/*"

@@ -1,0 +1,73 @@
+<nb-card class="nb-card">
+  <nb-card-header>
+    Edit Question
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="data">
+      <div class="form-group row">
+        <label for="input-email" class="label col-sm-3 col-form-label">Title</label>
+        <div class="col-sm-9">
+          <input type="text" class="input-full-width size-large status-basic shape-rectangle"
+            formControlName="question_title" nbInput fullWidth id="input-email" placeholder="Title">
+          <ng-container *ngIf="submitted && data.controls['question_title'].errors">
+            <p class="caption status-danger" *ngIf="data.controls['question_title'].errors.required">
+              Title is required!
+            </p>
+            <p class="caption status-danger" *ngIf="data.controls['question_title'].errors.maxlength">
+              Title can not be greater then 100 characters!
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Category</label>
+        <div class="col-sm-9">
+          <nb-select class="min-width input-full-width size-large status-basic shape-rectangle"
+            placeholder="Select Category" formControlName="category_id" (selectedChange)="changeCategory($event)"
+            [formControl]="selectedItemFormControl">
+            <nb-option *ngFor="let category of categoryData" value="{{category.category_id}}">{{category.category_name}}
+            </nb-option>
+          </nb-select>
+          <ng-container *ngIf="submitted && data.controls['category_id'].errors">
+            <p class="caption status-danger" *ngIf="data.controls['category_id'].errors.required">
+              Category is required!
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Image</label>
+        <div class="col-sm-9">
+          <input type="file" class="form-control input-full-width file-data" formControlName="image_url"
+            (change)="onFileChanged($event)" />
+          <ng-container *ngIf="submitted && data.controls['image_url'].errors">
+            <p class="caption status-danger" *ngIf="data.controls['image_url'].errors.required">
+              Image is required!
+            </p>
+          </ng-container>
+          <div *ngIf="imgUrl"><a href="{{imgUrl}}" target="_blank">View Image</a></div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="first-name" class="label col-sm-3 col-form-label">Answer</label>
+        <div class="col-sm-9" formArrayName="options">
+          <div *ngFor="let item of companyProponentDataContent.controls; let i=index" [formGroupName]="i"
+            class="position">
+            <input type="text" formControlName="name"
+              class="input-full-width size-large status-basic shape-rectangle mt-3" nbInput fullWidth id="first-name"
+              placeholder="Answer {{i+1}}">
+            <button *ngIf="i > 1" type="button" (click)="deleteOption(i)" class="close" aria-label="Close">
+              <span aria-hidden="true" class="cross">&times;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="float-left">
+        <button class="btn btn-success" status="primary" (click)="addItem(optionLength)">Add More Answer</button>
+      </div>
+      <div class="float-right">
+        <button class="btn btn-success" status="primary" (click)="updateQuestion()">Update Question</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

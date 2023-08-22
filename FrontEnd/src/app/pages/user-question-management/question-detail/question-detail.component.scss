@@ -1,0 +1,48 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  .nb-card {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.min-width{
+  min-width:250px;
+}
+.input-full-width {
+  width: 80% !important;
+  max-width: 100% !important
+}
+
+.cross{
+  position: absolute;
+  top: 25px;
+  left:calc(80% + 10px);
+}
+
+.position{
+  position: relative;
+}
+
+.pointer {cursor: pointer;}
+.color{color: blue;}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.label {
+  font-size: 16px !important;
+  }

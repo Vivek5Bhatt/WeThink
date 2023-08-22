@@ -1,0 +1,61 @@
+<nb-card class="nb-card">
+    <nb-card-header>
+        Reported Comment Detail
+    </nb-card-header>
+    <nb-card-body>
+        <div *ngIf="commentData">
+            <div class="form-group row" *ngIf="commentData.question_data.question_title">
+                <label for="input-email" class="label col-sm-3 col-form-label">Post Title :</label>
+                <div class="col-sm-9">
+                    <div> {{ commentData.question_data.question_title}}</div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="commentData.question_data.comment">
+                <label for="input-email" class="label col-sm-3 col-form-label">Comment :</label>
+                <div class="col-sm-9">
+                    <div> {{ commentData.question_data.comment}}</div>
+                </div>
+            </div> 
+            <div class="form-group row" *ngIf="commentData.question_data.comment">
+                <label for="input-email" class="label col-sm-3 col-form-label">Report Reason :</label>
+                <div class="col-sm-9">
+                    <div> {{ commentData.question_data.report_reason}}</div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="commentData.question_data.reported_by_user_id">
+                <label for="username" class="label col-sm-3 col-form-label">Reported By :</label>
+                <div class="col-sm-9">
+                    <div class="pointer color" (click)="goToUser(commentData.question_data.reported_by_user_id)">
+                        {{ commentData.question_data.reported_by_user_name}}</div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="commentData.question_data.reported_date">
+                <label for="input-email" class="label col-sm-3 col-form-label">Reported Date :</label>
+                <div class="col-sm-9">
+                    <div> {{ commentData.question_data.reported_date | date}}</div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="commentData.question_data.category_name">
+                <label for="username" class="label col-sm-3 col-form-label">Category :</label>
+                <div class="col-sm-9">
+                    <div> {{ commentData.question_data.category_name}}</div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="commentData.question_data.image_url">
+                <label for="username" class="label col-sm-3 col-form-label">Image :</label>
+                <div class="col-sm-9">
+                    <div *ngIf="commentData.question_data.image_url"><a href="{{commentData.question_data.image_url}}"
+                            target="_blank">View Image</a></div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="commentData.options">
+                <label for="first-name" class="label col-sm-3 col-form-label">Options :</label>
+                <div class="col-sm-9">
+                    <div *ngFor="let item of commentData.options; let i=index" class="position">
+                        <div> {{ item.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>

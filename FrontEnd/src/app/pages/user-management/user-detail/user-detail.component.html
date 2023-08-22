@@ -1,0 +1,79 @@
+<nb-card class="nb-card">
+  <nb-card-header>
+    User Details
+  </nb-card-header>
+  <nb-card-body>
+    <div *ngIf="userData">
+      <div class="form-group row">
+        <div class="col-sm-9">
+          <div><img *ngIf="userData.profile_picture" src="{{userData.profile_picture}}" alt="user image" height="100"
+              width="100" style="    margin-left: 17%;">
+            <img *ngIf="!userData.profile_picture" src="assets/images/default.jpg" alt="user image" height="100"
+              width="100" style="    margin-left: 17%;">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="input-email" class="label col-sm-3 col-form-label">First Name :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.first_name ? userData.first_name : 'NA'}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Last Name :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.last_name?userData.last_name :'NA'}}</div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Email :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.email ?userData.email : 'NA'}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Phone Number :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.phone_number?userData.phone_number:'NA'}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Date Of Birth :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.date_of_birth ? userData.date_of_birth:'NA'}}</div>
+        </div>
+      </div>
+      <div class="form-group row" >
+        <label for="username" class="label col-sm-3 col-form-label">County :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.county ? userData.county:'NA'}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">State :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.state ?userData.state :'NA'}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Gender :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.gender ?userData.gender : 'NA'}}</div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf ="userData.website">
+        <label for="username" class="label col-sm-3 col-form-label">Website :</label>
+        <div class="col-sm-9">
+          <div><a href="{{userData.website}}" target="_blank">{{ userData.website}}</a> </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="label col-sm-3 col-form-label">Bio :</label>
+        <div class="col-sm-9">
+          <div> {{ userData.bio?userData.bio:'NA'}}</div>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

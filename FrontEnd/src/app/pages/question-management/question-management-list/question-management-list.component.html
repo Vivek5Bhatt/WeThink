@@ -1,0 +1,72 @@
+<nb-card class="nb-card">
+  <nb-card-header>
+    Admin Question Management
+  </nb-card-header>
+
+  <nb-card-body>
+    
+    <div class="portlet-body scroll">
+      <!-- <nb-select placeholder="Select Category"  class="min-width mr-3" (selectedChange)="changeCategory($event)"  [formControl]="selectedItemFormControl">
+        <nb-option  *ngFor="let category of categoryData" value="{{category.category_id}}">{{category.category_name}}</nb-option>
+      </nb-select> -->
+      <span class="search-bar"> 
+        <input type="text" nbInput fullWidth (keyup)="searchUser($event)" [value]="search" class="size-large status-basic shape-rectangle" id="input-search" placeholder="Search">
+        <span aria-hidden="true" *ngIf="search !== ''" class="cross" (click)="clearSearch();">&times;</span>
+      </span>
+     
+       <button class="btn btn-primary float-right" [routerLink]="['/question-management/add']"> Add Question</button>
+      
+      <table class="mt-3 table table-striped table-bordered table-hover table-checkable order-column">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th id="title"> Title</th>
+            <th id="type"> Question Type</th>
+            <th id="category"> Category</th>
+            <th id="created"> Created Date</th>
+            <th id="status"> Status</th>
+            <th id="action"> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="" *ngFor="let question of data | paginate: config">
+            <td class="set-width">
+              {{ question.question_title }}
+            </td>
+            <td>
+              {{ question.question_type }}
+            </td>
+            <td>
+              {{ question.category_name }}
+            </td>
+            <td>
+              {{ question.created_at| date: 'MM-dd-yyyy' }}
+            </td>
+            <td>
+              {{ question.is_active ? "Active" : "Deactive" }}
+            </td>
+            <td>
+              <button class="btn m-78 btn-info" (click)="viewQuestion(question.question_id)">View</button>
+              <button class="btn m-78 btn-primary" (click)="goToEdit(question.question_id)">Edit</button>
+              <button  class="btn m-78 btn-danger" (click)="onDeleteConfirm(question.question_id)">Delete</button>
+            </td>
+          </tr>
+          <tr *ngIf="noData">
+            <td class="text-center" [attr.colspan]="colSpan">
+              No data available
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="text-center" [attr.colspan]="colSpan">
+              <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+            </td>
+          </tr>
+          
+        </tfoot>
+      </table>
+    </div>
+
+  </nb-card-body>
+</nb-card>
